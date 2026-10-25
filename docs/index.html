@@ -2,28 +2,36 @@
 <title>Derivados MX</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 /* Terminal financiera oscura. Layout: menú lateral fijo + barra superior con selector global de emisora + una página por módulo. */
+/* Plataforma financiera moderna: índigo/cian sobre azul noche; claro y oscuro. */
 :root {
-  --bg: #0B0F14; --panel: #111820; --panel2: #151E28; --line: #1F2A37;
-  --fg: #E6EDF3; --mute: #8B98A5; --up: #22C55E; --down: #EF4444; --accent: #38BDF8; --warn: #F59E0B;
-  --grid: #1A2430; --sel: rgba(56,189,248,.14);
+  --bg: #080C1C; --panel: #0F1630; --panel2: #161F40; --line: #232E55;
+  --fg: #EAF0FF; --mute: #98A4C8; --up: #34D399; --down: #FB7185; --accent: #7B88FF; --accent2: #22D3EE; --warn: #FBBF24;
+  --grid: #1A2347; --sel: rgba(123,136,255,.16);
+  --grad: linear-gradient(135deg, #6D7CFF 0%, #22D3EE 100%);
+  --glow: 0 10px 30px -12px rgba(109,124,255,.45); --shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 8px 24px -14px rgba(0,0,0,.6);
+  --head: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
-    --bg: #F4F6F8; --panel: #FFFFFF; --panel2: #F0F3F6; --line: #D6DDE5;
-    --fg: #14202B; --mute: #5B6B7A; --up: #15803D; --down: #B91C1C; --accent: #0369A1; --warn: #B45309;
-    --grid: #E6EBF0; --sel: rgba(3,105,161,.12); color-scheme: light;
+    --bg: #F2F4FB; --panel: #FFFFFF; --panel2: #EEF1FA; --line: #DCE1F0;
+    --fg: #0E1631; --mute: #5A6585; --up: #059669; --down: #E11D48; --accent: #4F46E5; --accent2: #0891B2; --warn: #D97706;
+    --grid: #E7EBF6; --sel: rgba(79,70,229,.10);
+    --grad: linear-gradient(135deg, #4F46E5 0%, #0891B2 100%);
+    --glow: 0 10px 28px -14px rgba(79,70,229,.45); --shadow: 0 1px 2px rgba(20,30,70,.06), 0 8px 24px -16px rgba(20,30,70,.18); color-scheme: light;
   }
 }
 :root[data-theme="light"] {
-  --bg: #F4F6F8; --panel: #FFFFFF; --panel2: #F0F3F6; --line: #D6DDE5;
-  --fg: #14202B; --mute: #5B6B7A; --up: #15803D; --down: #B91C1C; --accent: #0369A1; --warn: #B45309;
-  --grid: #E6EBF0; --sel: rgba(3,105,161,.12); color-scheme: light;
+  --bg: #F2F4FB; --panel: #FFFFFF; --panel2: #EEF1FA; --line: #DCE1F0;
+  --fg: #0E1631; --mute: #5A6585; --up: #059669; --down: #E11D48; --accent: #4F46E5; --accent2: #0891B2; --warn: #D97706;
+  --grid: #E7EBF6; --sel: rgba(79,70,229,.10);
+  --grad: linear-gradient(135deg, #4F46E5 0%, #0891B2 100%);
+  --glow: 0 10px 28px -14px rgba(79,70,229,.45); --shadow: 0 1px 2px rgba(20,30,70,.06), 0 8px 24px -16px rgba(20,30,70,.18); color-scheme: light;
 }
 * { box-sizing: border-box; }
 html, body { background: var(--bg); color: var(--fg); }
@@ -116,6 +124,133 @@ details > summary { cursor: pointer; color: var(--mute); }
   .sym input { width: 150px; }
 }
 @media (prefers-reduced-motion: reduce) { .side { transition: none; } }
+
+/* ===== capa visual moderna ===== */
+body { background: var(--bg); background-image: radial-gradient(900px 480px at 85% -8%, rgba(109,124,255,.14), transparent 60%), radial-gradient(700px 420px at -5% 105%, rgba(34,211,238,.09), transparent 60%); background-attachment: fixed; letter-spacing: -.003em; }
+.side { background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 120%); border-right: 1px solid var(--line); padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
+.brand { display: flex; align-items: center; gap: 11px; padding: 0 16px 16px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+.brand b { font-family: var(--head); font-size: 16px; font-weight: 800; letter-spacing: -.02em; }
+.brand span { font-size: 10.5px; margin-top: 1px; }
+.logo { width: 34px; height: 34px; border-radius: 10px; background: var(--grad); display: flex; align-items: flex-end; justify-content: center; gap: 3px; padding: 8px 7px; box-shadow: var(--glow); flex: none; }
+.logo i { display: block; width: 4px; border-radius: 2px; background: #fff; } .logo i:nth-child(1) { height: 9px; opacity: .85; } .logo i:nth-child(2) { height: 17px; } .logo i:nth-child(3) { height: 12px; opacity: .85; }
+.nav { padding: 0 10px; display: flex; flex-direction: column; gap: 2px; }
+.nav a { border-left: 0; border-radius: 10px; padding: 8px 10px; align-items: center; font-size: 12.5px; font-weight: 500; transition: background .15s, color .15s; }
+.nav a i { width: 24px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 7px; background: var(--panel2); font-size: 10.5px; font-weight: 600; color: var(--mute); text-align: center; flex: none; }
+.nav a:hover { background: var(--panel2); color: var(--fg); }
+.nav a.on { background: var(--sel); color: var(--fg); font-weight: 600; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent); }
+.nav a.on i { background: var(--grad); color: #fff; }
+.nav .sep { margin: 8px 6px; }
+.top { background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); border-bottom: 1px solid var(--line); padding-top: 12px; padding-bottom: 12px; }
+.sym input { border-radius: 10px; font-size: 13px; background: var(--panel); border-color: var(--line); }
+.badge { border-radius: 99px; padding: 4px 11px; background: var(--panel); box-shadow: var(--shadow); }
+.page { gap: 16px; padding-top: 20px; }
+.hero { position: relative; overflow: hidden; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; box-shadow: var(--shadow); }
+.hero::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--grad); }
+.hero::after { content: ""; position: absolute; width: 320px; height: 320px; right: -90px; top: -150px; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 28%, transparent), transparent 65%); pointer-events: none; }
+.hero > * { position: relative; z-index: 1; }
+.page h1 { font-family: var(--head); font-size: 24px; font-weight: 800; letter-spacing: -.025em; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.page h1 small { order: -1; background: var(--grad); color: #fff; border-radius: 99px; padding: 3px 10px; font-family: var(--sans); font-weight: 700; font-size: 10px; letter-spacing: .08em; margin: 0; }
+.lead { font-size: 13.5px; line-height: 1.55; margin-top: 8px; max-width: 86ch; }
+.panel { border-radius: 16px; padding: 16px 18px; box-shadow: var(--shadow); }
+.panel > h2, .panel > .ph { font-family: var(--head); font-size: 12px; font-weight: 700; letter-spacing: .07em; color: var(--fg); margin-bottom: 14px; }
+.panel > h2::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 3px; background: var(--grad); margin-right: 9px; flex: none; }
+.panel > h2 { justify-content: flex-start; gap: 0; flex-wrap: wrap; row-gap: 6px; } .panel > h2 .tools, .panel > h2 .mute { margin-left: auto; } .panel > h2 .mute { font-weight: 500; }
+.kpis { gap: 12px; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+.kpi { position: relative; overflow: hidden; border-radius: 14px; padding: 13px 15px 12px; box-shadow: var(--shadow); }
+.kpi::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--grad); opacity: .9; }
+.kpi span { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.kpi b { font-size: 21px; font-weight: 700; margin-top: 5px; letter-spacing: -.02em; }
+input, select, button, textarea { border-radius: 10px; padding: 7px 10px; transition: border-color .15s, box-shadow .15s, background .15s; }
+input:hover, select:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+input:focus-visible, select:focus-visible { outline: 0; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+button:hover { border-color: var(--accent); background: var(--sel); }
+button.pri { background: var(--grad); color: #fff; border: 0; font-weight: 600; box-shadow: var(--glow); } button.pri:hover { filter: brightness(1.1); background: var(--grad); }
+.field label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+.seg { border-radius: 99px; padding: 3px; background: var(--panel); gap: 2px; }
+.seg button { border-radius: 99px; background: transparent; padding: 4px 12px; border: 0; color: var(--mute); font-weight: 500; }
+.seg button + button { border-left: 0; } .seg button:hover { background: var(--panel2); color: var(--fg); }
+.seg button.on { background: var(--grad); color: #fff; font-weight: 600; box-shadow: var(--glow); }
+.tabs { gap: 6px; border-bottom: 0; padding: 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; width: fit-content; max-width: 100%; }
+.tabs button { border: 0; border-radius: 10px; padding: 7px 14px; font-weight: 500; }
+.tabs button:hover { background: var(--panel2); color: var(--fg); }
+.tabs button.on { background: var(--grad); color: #fff; font-weight: 600; box-shadow: var(--glow); }
+table { font-size: 12.5px; }
+th, td { padding: 8px 12px; }
+th { text-transform: uppercase; letter-spacing: .06em; font-size: 10px; font-weight: 700; background: var(--panel); border-bottom: 1px solid var(--line); }
+tbody tr { transition: background .12s; } tbody tr:hover td { background: var(--sel); }
+tr.hi td { background: var(--sel); box-shadow: inset 3px 0 0 var(--accent) ; }
+.tw { border-radius: 12px; }
+.note { border-radius: 12px; border-left-width: 4px; padding: 11px 15px; box-shadow: var(--shadow); line-height: 1.5; }
+.note.ok { background: color-mix(in srgb, var(--up) 7%, var(--panel)); } .note.warn { background: color-mix(in srgb, var(--warn) 8%, var(--panel)); } .note.err { background: color-mix(in srgb, var(--down) 8%, var(--panel)); }
+.pill { border-radius: 99px; font-weight: 600; padding: 2px 10px; }
+.pill.up { background: color-mix(in srgb, var(--up) 14%, transparent); color: var(--up); } .pill.warn { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); } .pill.down { background: color-mix(in srgb, var(--down) 14%, transparent); color: var(--down); }
+.empty { border-radius: 14px; }
+canvas.ch { border-radius: 10px; }
+.modal { backdrop-filter: blur(6px); background: rgba(5,8,22,.62); } .modal .box { border-radius: 18px; padding: 22px; box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); }
+.toast { border-radius: 12px; border-color: var(--accent); box-shadow: var(--glow); }
+.foot { border-top: 1px solid var(--line); background: transparent; }
+a { color: var(--accent); }
+::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; border: 2px solid transparent; background-clip: content-box; } ::-webkit-scrollbar-thumb:hover { background: var(--mute); background-clip: content-box; border: 2px solid transparent; }
+@media (max-width: 820px) { .hero { padding: 16px; border-radius: 16px; } .page h1 { font-size: 20px; } .kpi b { font-size: 18px; } }
+
+/* σ, Δ y β deben conservar su caso: sin mayúsculas forzadas */
+.panel > h2, .panel > .ph { text-transform: none; letter-spacing: -.005em; font-size: 13.5px; }
+.field label, .kpi span, th { text-transform: none; letter-spacing: .01em; }
+.field label { font-size: 11px; } .kpi span { font-size: 11.5px; } th { font-size: 11px; font-weight: 600; }
+
+/* ===== v3: identidad visual (color, jerarquía, profesionalismo) ===== */
+:root { --c1: #8B7CFF; --c2: #22D3EE; --c3: #F472B6; --c4: #FBBF24; --c5: #34D399;
+  --grad: linear-gradient(120deg, #7C6BFF 0%, #22D3EE 55%, #34D399 100%); --grad2: linear-gradient(120deg, #F472B6, #8B7CFF); }
+:root[data-theme="light"] { --c1: #5B4BEA; --c2: #0891B2; --c3: #DB2777; --c4: #D97706; --c5: #059669; --grad: linear-gradient(120deg, #5B4BEA 0%, #0891B2 60%, #059669 100%); --grad2: linear-gradient(120deg, #DB2777, #5B4BEA); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --c1: #5B4BEA; --c2: #0891B2; --c3: #DB2777; --c4: #D97706; --c5: #059669; --grad: linear-gradient(120deg, #5B4BEA 0%, #0891B2 60%, #059669 100%); --grad2: linear-gradient(120deg, #DB2777, #5B4BEA); } }
+body { background-image: radial-gradient(1000px 520px at 88% -10%, color-mix(in srgb, var(--c1) 20%, transparent), transparent 62%), radial-gradient(800px 460px at -8% 108%, color-mix(in srgb, var(--c2) 14%, transparent), transparent 62%), radial-gradient(500px 300px at 50% 40%, color-mix(in srgb, var(--c3) 6%, transparent), transparent 70%); }
+/* menú lateral con grupos de color */
+.grp { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); padding: 14px 12px 5px; opacity: .85; }
+.nav a.g-a i { background: color-mix(in srgb, var(--c1) 20%, var(--panel2)); color: var(--c1); }
+.nav a.g-d i { background: color-mix(in srgb, var(--c2) 20%, var(--panel2)); color: var(--c2); }
+.nav a.g-r i { background: color-mix(in srgb, var(--c3) 20%, var(--panel2)); color: var(--c3); }
+.nav a.g-c i { background: color-mix(in srgb, var(--c4) 22%, var(--panel2)); color: var(--c4); }
+.nav a.on.g-a { box-shadow: inset 3px 0 0 var(--c1), inset 0 0 0 1px color-mix(in srgb, var(--c1) 30%, transparent); background: color-mix(in srgb, var(--c1) 12%, transparent); }
+.nav a.on.g-d { box-shadow: inset 3px 0 0 var(--c2), inset 0 0 0 1px color-mix(in srgb, var(--c2) 30%, transparent); background: color-mix(in srgb, var(--c2) 12%, transparent); }
+.nav a.on.g-r { box-shadow: inset 3px 0 0 var(--c3), inset 0 0 0 1px color-mix(in srgb, var(--c3) 30%, transparent); background: color-mix(in srgb, var(--c3) 12%, transparent); }
+.nav a.on.g-c { box-shadow: inset 3px 0 0 var(--c4), inset 0 0 0 1px color-mix(in srgb, var(--c4) 30%, transparent); background: color-mix(in srgb, var(--c4) 12%, transparent); }
+.nav a.on i { background: var(--grad) !important; color: #fff !important; }
+/* barra superior: cotización */
+.quote { display: flex; align-items: baseline; gap: 8px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel); box-shadow: var(--shadow); white-space: nowrap; }
+.quote b { font-family: var(--mono); font-size: 15px; font-weight: 700; } .quote span { font-family: var(--mono); font-size: 12px; font-weight: 600; } .quote em { font-style: normal; font-size: 10.5px; color: var(--mute); }
+/* encabezado de módulo */
+.hero { background: linear-gradient(135deg, color-mix(in srgb, var(--c1) 16%, var(--panel)) 0%, var(--panel) 48%, color-mix(in srgb, var(--c2) 12%, var(--panel)) 100%); border-color: color-mix(in srgb, var(--c1) 30%, var(--line)); }
+.hero::before { height: 4px; }
+.hero::after { background: radial-gradient(circle, color-mix(in srgb, var(--c3) 30%, transparent), transparent 65%); }
+.page h1 { background: none; }
+.page h1 small { background: var(--grad2); box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--c3) 70%, transparent); }
+/* paneles y KPIs en color */
+.panel { border-color: color-mix(in srgb, var(--c1) 14%, var(--line)); background: linear-gradient(180deg, color-mix(in srgb, var(--c1) 5%, var(--panel)), var(--panel) 90px); }
+.panel > h2::before { width: 10px; height: 10px; border-radius: 4px; }
+.kpi:nth-child(5n+1)::before { background: linear-gradient(var(--c1), var(--c2)); } .kpi:nth-child(5n+2)::before { background: linear-gradient(var(--c2), var(--c5)); } .kpi:nth-child(5n+3)::before { background: linear-gradient(var(--c3), var(--c1)); } .kpi:nth-child(5n+4)::before { background: linear-gradient(var(--c4), var(--c3)); } .kpi:nth-child(5n+5)::before { background: linear-gradient(var(--c5), var(--c2)); }
+.kpi { background: linear-gradient(135deg, color-mix(in srgb, var(--c1) 7%, var(--panel)), var(--panel)); }
+.kpi::before { width: 4px; }
+.kpi b { background: none; }
+th { color: var(--c1); border-bottom: 2px solid color-mix(in srgb, var(--c1) 35%, var(--line)); }
+tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--c1) 3%, transparent); }
+a { color: var(--c2); }
+.badge { border-color: color-mix(in srgb, var(--c2) 35%, var(--line)); }
+/* recomendador */
+.rec-cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); margin-top: 14px; }
+.rec-card { position: relative; display: flex; flex-direction: column; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; box-shadow: var(--shadow); min-width: 0; }
+.rec-card.best { border-color: color-mix(in srgb, var(--c5) 55%, var(--line)); background: linear-gradient(160deg, color-mix(in srgb, var(--c5) 11%, var(--panel)), var(--panel) 55%); box-shadow: 0 14px 40px -20px color-mix(in srgb, var(--c5) 60%, transparent); }
+.rec-card.off { opacity: .6; }
+.rec-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .rec-head b { font-family: var(--head); font-size: 15.5px; letter-spacing: -.01em; } .rec-score { margin-left: auto; font-family: var(--mono); font-weight: 700; font-size: 13px; color: var(--mute); }
+.rec-tag { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; color: #fff; }
+.rec-tag.t1 { background: linear-gradient(120deg, #10B981, #22D3EE); } .rec-tag.t2 { background: linear-gradient(120deg, #8B7CFF, #22D3EE); } .rec-tag.t3 { background: var(--mute); } .rec-tag.tx { background: var(--down); }
+.rec-bar { height: 7px; border-radius: 99px; background: var(--panel2); overflow: hidden; } .rec-bar i { display: block; height: 100%; border-radius: 99px; background: var(--grad); }
+.rec-sec h3, .rec-two h3 { margin: 0 0 4px; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c1); }
+.rec-sec p, .rec-two p { margin: 0; color: var(--fg); line-height: 1.55; font-size: 12.5px; opacity: .9; }
+.rec-sec ul { margin: 0; padding-left: 17px; display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; line-height: 1.5; } .rec-sec li::marker { color: var(--c2); }
+.rec-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.rec-m { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 2px; }
+.rec-m > div { background: var(--panel2); border-radius: 12px; padding: 8px 11px; } .rec-m span { display: block; font-size: 10.5px; color: var(--mute); } .rec-m b { font-family: var(--mono); font-size: 14px; } .rec-m em { display: block; font-style: normal; font-size: 10px; color: var(--mute); }
+button:disabled { opacity: .5; cursor: default; }
 </style>
 <div id="root"></div>
 <script>
@@ -355,7 +490,7 @@ function chartBox(spec, caption) {
   requestAnimationFrame(() => { const api = Chart(c, spec); wrap._api = api; });
   return wrap;
 }
-const PAL = ["#38BDF8", "#F59E0B", "#A78BFA", "#22C55E", "#F472B6", "#EF4444"];
+const PAL = ["#6D7CFF", "#22D3EE", "#FBBF24", "#34D399", "#F472B6", "#FB7185"];
 function legend(items) { return h("div", { class: "legend" }, items.map(([c, t]) => h("span", null, h("i", { style: `background:${c}` }), t))); }
 /* ===== realdata.js ===== */
 /* Datos históricos diarios de Yahoo Finance (CSV descargado por el usuario, corte 2026-10-23, desde 2016-10). Precios en centavos. */
@@ -639,7 +774,7 @@ function ctx() {
 const CYCLE_LABEL = { diario: "diario", semanal: "semanal", mensual: "mensual" };
 const unitWord = () => ({ diario: "días", semanal: "semanas", mensual: "meses" }[S.cycle]);
 function pageHead(n, title, lead, ds) {
-  return h("div", null, h("h1", null, title, h("small", null, n ? "MÓDULO " + n : "")), lead ? h("p", { class: "lead" }, lead) : null, ds ? h("div", { style: "margin-top:10px" }, provNote(ds)) : null);
+  return h("div", { class: "hero" }, h("h1", null, title, n ? h("small", null, "MÓDULO " + n) : null), lead ? h("p", { class: "lead" }, lead) : null, ds ? h("div", { style: "margin-top:10px" }, provNote(ds)) : null);
 }
 const DISCLAIMER = "Herramienta académica. No constituye asesoría de inversión.";
 
@@ -655,12 +790,10 @@ function pageCatalogo() {
     h("a", { href: "https://www.mexder.com.mx/wb3/wb/MEX/contratos_opcion", target: "_blank", rel: "noopener" }, "Opciones MexDer ↗"))));
   cat.append(table([
     { t: "Clave", l: 1, f: (r) => h("b", { class: "mono" }, r.mexderKey) }, { t: "Emisora", l: 1, k: "name" },
-    { t: "Yahoo", l: 1, f: (r) => r.yahooSymbol || "—" }, { t: "Investing", l: 1, f: (r) => r.investingSlug || "—" },
-    { t: "Estado", l: 1, f: (r) => h("span", { class: "pill " + (r.verified ? "up" : "warn") }, r.verified ? "verificada" : "sin verificar") },
-    { t: "Datos", l: 1, f: (r) => (safeLS.get(LS + "ds." + r.mexderKey) ? "CSV propio" : REAL_RAW[r.mexderKey] ? "Yahoo (incluido)" : "ejemplo") },
+    { t: "Yahoo", l: 1, f: (r) => r.yahooSymbol || "—" },
     { t: "", l: 1, f: (r) => h("span", { class: "tools" }, h("button", { class: "sm " + (r.mexderKey === S.key ? "pri" : ""), onclick: () => selectKey(r.mexderKey) }, r.mexderKey === S.key ? "Activa" : "Usar"), h("button", { class: "sm", onclick: () => editEntry(r) }, "Editar")) },
   ], rows));
-  cat.append(h("div", { class: "cap" }, "Las claves del catálogo son las que descargaste de Yahoo Finance, sin verificar contra la lista vigente de MexDer (ALFAA no devolvió datos y no está incluida). Marca como «verificada» solo lo que hayas confirmado."));
+  cat.append(h("div", { class: "cap" }, "Las claves corresponden a los símbolos de Yahoo Finance. Puedes editar o agregar emisoras con los botones de esta tabla."));
   page.append(cat);
   if (LIVE_STATUS) { const bad = Object.entries(LIVE_STATUS).filter(([, v]) => !v.ok).map(([k]) => k); page.append(h("div", { class: "note " + (bad.length ? "warn" : "ok") }, h("b", null, "Actualización automática: "), LIVE_ASOF || "", bad.length ? ` · sin dato nuevo hoy: ${bad.join(", ")} (se muestra el último dato guardado).` : " · todas las emisoras actualizadas.")); }
   // datos
@@ -680,12 +813,7 @@ function pageCatalogo() {
     safeLS.get(LS + "ds." + BENCH_KEY) ? h("button", { onclick: () => { clearCsv(BENCH_KEY); renderAll(); } }, "Quitar") : null));
   page.append(csvPanel);
   // enlaces
-  const urls = e.investingSlug ? E.investingUrls(e.investingSlug) : null;
-  const links = h("div", { class: "panel" }, h("h2", null, "Enlaces de consulta para " + S.key));
-  if (urls) links.append(h("div", { class: "tools" }, Object.entries(urls).map(([k, u]) => h("a", { href: u, target: "_blank", rel: "noopener" }, k + " ↗"))));
-  else links.append(h("div", { class: "note warn" }, "Esta emisora no tiene «slug» de Investing. Edítala y agrégalo (es la parte final de la URL: mx.investing.com/equities/", h("b", null, "slug"), ")."));
-  if (e.yahooSymbol) links.append(h("div", { class: "tools", style: "margin-top:8px" }, h("a", { href: "https://finance.yahoo.com/quote/" + encodeURIComponent(e.yahooSymbol) + "/history", target: "_blank", rel: "noopener" }, "Yahoo Finance histórico ↗")));
-  page.append(links);
+  if (e.yahooSymbol) page.append(h("div", { class: "panel" }, h("h2", null, "Consulta externa de " + S.key), h("div", { class: "tools" }, h("a", { href: "https://finance.yahoo.com/quote/" + encodeURIComponent(e.yahooSymbol) + "/history", target: "_blank", rel: "noopener" }, "Yahoo Finance histórico ↗"))));
   page.append(h("div", { class: "note" }, h("b", null, "Datos en vivo. "), "La app trae incluido el histórico diario de Yahoo Finance (corte 2026-10-23, desde 2016-10) para las emisoras del catálogo y el IPC; para actualizarlo o ampliarlo, carga un CSV nuevo. La conexión automática a Yahoo/Investing requiere un servidor propio (CORS); el motor ya incluye el cliente de Yahoo listo para ese despliegue."));
   return page;
 }
@@ -705,12 +833,12 @@ function editEntry(r) {
   const ver = h("input", { type: "checkbox", id: "e-ver", checked: d.verified });
   const triSel = (id, v) => h("select", { id }, [[ "", "No sé" ], [ "1", "Sí" ], [ "0", "No" ]].map(([x, t]) => h("option", { value: x, selected: x === (v == null ? "" : v ? "1" : "0") }, t)));
   const sf = triSel("e-fut", d.hasFuture), so = triSel("e-opt", d.hasOption);
-  const body = h("div", { class: "controls" }, mk("k", "Clave MexDer", d.mexderKey), mk("n", "Nombre", d.name), mk("y", "Símbolo Yahoo (ej. WALMEX.MX)", d.yahooSymbol), mk("s", "Slug Investing", d.investingSlug), field("¿Tiene futuro?", sf, "e-fut"), field("¿Tiene opción?", so, "e-opt"), field("Verificada contra MexDer", ver, "e-ver"));
+  const body = h("div", { class: "controls" }, mk("k", "Clave MexDer", d.mexderKey), mk("n", "Nombre", d.name), mk("y", "Símbolo Yahoo (ej. WALMEX.MX)", d.yahooSymbol), field("¿Tiene futuro?", sf, "e-fut"), field("¿Tiene opción?", so, "e-opt"), field("Verificada contra MexDer", ver, "e-ver"));
   if (isNew === false) f.k.disabled = true;
   const m = modal(isNew ? "Agregar emisora" : "Editar " + d.mexderKey, body, h("button", { class: "pri", onclick: () => {
     try {
       const tri = (el) => (el.value === "" ? null : el.value === "1");
-      const ent = { mexderKey: f.k.value.trim().toUpperCase(), name: f.n.value.trim() || f.k.value.trim(), yahooSymbol: f.y.value.trim() || null, investingSlug: f.s.value.trim() || null, hasFuture: tri(sf), hasOption: tri(so), verified: ver.checked };
+      const ent = { mexderKey: f.k.value.trim().toUpperCase(), name: f.n.value.trim() || f.k.value.trim(), yahooSymbol: f.y.value.trim() || null, investingSlug: d.investingSlug || null, hasFuture: tri(sf), hasOption: tri(so), verified: ver.checked };
       const prob = E.validateEntry(ent); if (prob.length) throw new Error(prob.join(" "));
       const i = S.catalog.findIndex((x) => x.mexderKey === ent.mexderKey); ent._edited = true;
       if (i >= 0) S.catalog[i] = ent; else S.catalog.push(ent);
@@ -1084,7 +1212,7 @@ function histVol(n = 60) { const cl = getDaily(S.key).bars.map((b) => b.close); 
 function mkt() { const hv = histVol(60); return { spot: lastClose(), rate: S.params.rate, q: S.params.q, mult: S.params.multiplier, hv: hv ? hv.value : 0.3, hvOk: !!hv }; }
 const OPT = { key: null };
 function optState() {
-  if (OPT.key !== S.key) { const m = mkt(); const step = m.spot < 50 ? 1 : m.spot < 200 ? 5 : m.spot < 1000 ? 10 : 50; Object.assign(OPT, { key: S.key, type: "call", side: "long", strike: Math.round(m.spot / step) * step, days: quarterlyExpiries()[0].days, vol: +(m.hv * 100).toFixed(2), premium: "", style: "europea", steps: 100, contracts: 1, divAmt: 0, divDays: 30, up: "", down: "", ud: "crr" }); }
+  if (OPT.key !== S.key) { const m = mkt(); const step = m.spot < 50 ? 1 : m.spot < 200 ? 5 : m.spot < 1000 ? 10 : 50; Object.assign(OPT, { key: S.key, type: "call", side: "long", strike: Math.round(m.spot / step) * step, days: quarterlyExpiries()[0].days, vol: +(m.hv * 100).toFixed(2), volSrc: "Histórica 60 d", _quotes: [], premium: "", style: "europea", steps: 100, contracts: 1, divAmt: 0, divDays: 30, up: "", down: "", ud: "crr" }); }
   return OPT;
 }
 const dayOpts = () => [...quarterlyExpiries().map((x) => [String(x.days), `${x.date} (${x.days} d) · ${MESES[+x.date.slice(5, 7) - 1]} trimestral`]), ["custom", "Otro plazo (días)…"]];
@@ -1109,6 +1237,31 @@ function payoffChart(curves, spot, extraH = [], height = 300, xs) {
 function stratMetrics(a, mult) {
   const fm = (r) => (r.unlimited ? "ilimitada" : r.value == null ? "—" : money(r.value));
   return h("div", { class: "kpis" }, kpi("Prima neta", money(a.netPremium), a.netPremium > 0 ? "se paga (débito)" : a.netPremium < 0 ? "se recibe (crédito)" : "sin prima"), kpi("Costos", money(a.costs)), kpi("Ganancia máx.", fm(a.maxProfit), a.maxProfit.atPrice != null ? "en " + nf(a.maxProfit.atPrice) : "", "up"), kpi("Pérdida máx.", fm(a.maxLoss) , a.hasUnlimitedRisk ? "RIESGO ILIMITADO" : a.maxLoss.atPrice === 0 ? "si el precio cae" : a.maxLoss.atPrice != null ? "en " + nf(a.maxLoss.atPrice) : "", "down"), kpi("Puntos de equilibrio", a.breakEvens.length ? a.breakEvens.map((x) => nf(x)).join(" · ") : "ninguno"));
+}
+
+
+/* ---------- panel compartido: σ de trabajo (histórica, EWMA, calibrada a cotizaciones, manual) ---------- */
+function ewmaVol(lambda = 0.94) {
+  const cl = getDaily(S.key).bars.map((b) => b.close); const r = []; for (let i = 1; i < cl.length; i++) if (cl[i] > 0 && cl[i - 1] > 0) r.push(Math.log(cl[i] / cl[i - 1]));
+  if (r.length < 40) return null; const k = 30; let v = r.slice(0, k).reduce((a, b) => a + b * b, 0) / k; for (let i = k; i < r.length; i++) v = lambda * v + (1 - lambda) * r[i] * r[i];
+  return Math.sqrt(v * 252);
+}
+function volPanel(onChange) {
+  const o = optState(), m = mkt(); const qs = o._quotes || (o._quotes = []);
+  const cands = [20, 60, 120, 252].map((n) => { const v = histVol(n); return v ? { id: "h" + n, t: "Histórica " + n + " d", v: v.value } : null; }).filter(Boolean);
+  const ew = ewmaVol(); if (ew) cands.push({ id: "ew", t: "EWMA (λ = 0.94)", v: ew });
+  const cal = qs.length ? tryCalc(() => E.calibrateVolatility(qs.map((z) => ({ strike: z.strike, type: z.type, marketPrice: z.marketPrice, timeYears: E.yearsFromDays(z.days) })), m.spot, m.rate, m.q)) : null;
+  if (cal) cands.push({ id: "cal", t: "Calibrada a " + cal.quotesUsed + " cotización(es)", v: cal.volatility, cal });
+  const pick = (c) => { o.vol = +(c.v * 100).toFixed(2); o.volSrc = c.t; onChange(); };
+  const fK = num("vp-k", o.strike), fT = sel("vp-t", [["call", "Call"], ["put", "Put"]], "call"), fP = num("vp-p", ""), fD = num("vp-d", o.days, { step: 1 });
+  const add = h("button", { class: "pri", onclick: () => { if (!(+fK.value > 0 && +fP.value > 0 && +fD.value > 0)) return toast("Strike, prima y días deben ser > 0."); qs.push({ strike: +fK.value, type: fT.value, marketPrice: +fP.value, days: Math.round(+fD.value) }); const c = tryCalc(() => E.calibrateVolatility(qs.map((z) => ({ strike: z.strike, type: z.type, marketPrice: z.marketPrice, timeYears: E.yearsFromDays(z.days) })), m.spot, m.rate, m.q), (er) => toast(er.message)); if (c) pick({ t: "Calibrada a " + c.quotesUsed + " cotización(es)", v: c.volatility }); else onChange(); } }, "Agregar cotización y calibrar");
+  const sigNow = o.vol / 100;
+  return h("div", { class: "panel" }, h("h2", null, "Volatilidad de trabajo (σ) para las primas", h("span", { class: "mute" }, `σ en uso: ${pf(sigNow)} · fuente: ${o.volSrc || "Manual"}`)),
+    h("div", { class: "cap" }, "Todas las primas de este módulo se calculan con Black-Scholes-Merton usando esta σ. Elige cómo calibrarla; al cambiarla se recalcula todo (cobertura, comparativa y escenarios)."),
+    table([{ t: "Fuente de σ", l: 1, f: (c) => (c.t === o.volSrc ? h("b", null, c.t + " ✓") : c.t) }, { t: "σ anualizada", f: (c) => pf(c.v) }, { t: "Prima de un call ATM (ref.)", f: (c) => nf(E.blackScholes({ spot: m.spot, strike: m.spot, timeYears: E.yearsFromDays(o.days), rate: m.rate, volatility: c.v, dividendYield: m.q, type: "call" }).price, 3) }, { t: "", f: (c) => h("button", { class: "sm", onclick: () => pick(c) }, "Usar") }], cands),
+    h("div", { class: "cap", style: "margin-top:8px" }, "Calibración a mercado: captura una o más primas reales (cadena de opciones de MexDer o de tu casa de bolsa); σ se ajusta por mínimos cuadrados sobre los precios (σ implícita si es una sola). Sin cotizaciones, la σ es histórica y la prima resultante es teórica, no precio de mercado."),
+    h("div", { class: "controls" }, field("Strike", fK, "vp-k"), field("Tipo", fT, "vp-t"), field("Prima de mercado", fP, "vp-p"), field("Días al venc.", fD, "vp-d"), add),
+    qs.length ? h("div", { class: "cap" }, "Cotizaciones cargadas: " + qs.map((z) => `${z.type} K${nf(z.strike)} prima ${nf(z.marketPrice, 3)} (${z.days} d)`).join(" · "), " ", h("button", { class: "sm", onclick: () => { qs.length = 0; o.volSrc = "Manual"; onChange(); } }, "Borrar cotizaciones")) : null);
 }
 
 /* ---------- 7. FUTUROS ---------- */
@@ -1158,8 +1311,8 @@ function pageOpciones() {
   const out = h("div", { style: "display:flex;flex-direction:column;gap:14px" });
   const re = () => calc();
   const typeSel = sel("in-type", [["call", "Call"], ["put", "Put"]], o.type); typeSel.onchange = () => { o.type = typeSel.value; re(); };
-  const volI = num("in-vol", o.vol, { step: 0.1, min: 0.1 }); volI.onchange = () => { o.vol = parseFloat(volI.value); re(); };
-  page.append(h("div", { class: "panel" }, h("h2", null, "Parámetros", h("span", { class: "tools" }, h("span", { class: "mute" }, "σ histórica 60 d: " + (m.hvOk ? pf(m.hv) : "n/d")), h("button", { class: "sm", onclick: () => { o.vol = +(m.hv * 100).toFixed(2); volI.value = o.vol; re(); } }, "Usar σ histórica"))),
+  const volI = num("in-vol", o.vol, { step: 0.1, min: 0.1 }); volI.onchange = () => { o.vol = parseFloat(volI.value); o.volSrc = "Manual"; re(); };
+  page.append(h("div", { class: "panel" }, h("h2", null, "Parámetros", h("span", { class: "tools" }, h("span", { class: "mute" }, "σ histórica 60 d: " + (m.hvOk ? pf(m.hv) : "n/d")), h("button", { class: "sm", onclick: () => { o.vol = +(m.hv * 100).toFixed(2); o.volSrc = "Histórica 60 d"; volI.value = o.vol; re(); } }, "Usar σ histórica"))),
     h("div", { class: "controls" }, field("Tipo", typeSel, "in-type"), sideSel(o, re), bind(o, "strike", "Strike (K)", o.strike, re, { step: "any", min: 0 }), termField(o, re, "o-term"), field("Volatilidad σ (% anual)", volI, "in-vol"), bind(o, "premium", "Prima de mercado (opcional)", o.premium, re, { step: 0.01, min: 0 }), bind(o, "contracts", "Contratos", o.contracts, re, { step: 1, min: 1 }), styleSel(o, re), bind(o, "divAmt", "Dividendo discreto ($/acción)", o.divAmt, re, { step: 0.01, min: 0 }), bind(o, "divDays", "…se paga en (días)", o.divDays, re, { step: 1, min: 1 })),
     h("div", { class: "cap" }, `Spot ${nf(m.spot)} (último cierre) · tasa ${pf(m.rate)} · rendimiento por dividendo ${pf(m.q)} · multiplicador ${m.mult} títulos. ` + (o.divAmt > 0 ? "Con dividendo discreto el spot se ajusta restando su valor presente (y q continuo se pone en 0 para no duplicar)." : ""))));
   page.append(h("div", { class: "tabs" }, [["basica", "Opción básica"], ["bs", "Black-Scholes y calibración"], ["bin", "Binomial"]].map(([k, t]) => h("button", { class: opcTab === k ? "on" : "", onclick: () => { opcTab = k; renderView(); } }, t))), out);
@@ -1194,7 +1347,7 @@ function pageOpciones() {
     out.append(h("div", { class: "kpis" }, kpi("Prima BS", nf(r.price, 4), "con σ = " + pf(x.sigma)), kpi("d1", nf(r.d1, 4)), kpi("d2", nf(r.d2, 4)), kpi("Modelo", "Black-Scholes-Merton", "europeo, con dividendos")));
     // hist vol table
     const hv = [20, 60, 120, 252].map((n) => { const v = histVol(n); return v ? { n, v: v.value, p: bs(x, { sigma: v.value }).price } : { n, v: null, p: null }; });
-    out.append(h("div", { class: "panel" }, h("h2", null, "Calibración 1: volatilidad histórica"), table([{ t: "Ventana (días)", k: "n" }, { t: "σ anualizada", f: (z) => pf(z.v) }, { t: "Prima BS", f: (z) => nf(z.p, 4) }, { t: "", f: (z) => (z.v ? h("button", { class: "sm", onclick: () => { o.vol = +(z.v * 100).toFixed(2); renderView(); } }, "Usar") : "") }], hv)));
+    out.append(h("div", { class: "panel" }, h("h2", null, "Calibración 1: volatilidad histórica"), table([{ t: "Ventana (días)", k: "n" }, { t: "σ anualizada", f: (z) => pf(z.v) }, { t: "Prima BS", f: (z) => nf(z.p, 4) }, { t: "", f: (z) => (z.v ? h("button", { class: "sm", onclick: () => { o.vol = +(z.v * 100).toFixed(2); o.volSrc = "Histórica " + z.n + " d"; renderView(); } }, "Usar") : "") }], hv)));
     // calibración a cotizaciones
     const qs = o._quotes || (o._quotes = []); const panel = h("div", { class: "panel" }, h("h2", null, "Calibración 2: volatilidad implícita desde cotizaciones de mercado"));
     const fK = num("q-k", o.strike), fT = sel("q-t", [["call", "Call"], ["put", "Put"]], "call"), fP = num("q-p", ""), fD = num("q-d", o.days, { step: 1 });
@@ -1204,7 +1357,7 @@ function pageOpciones() {
       const rows = qs.map((z) => { const iv = tryCalc(() => E.impliedVolatility({ spot: x.spot, strike: z.strike, timeYears: E.yearsFromDays(z.days), rate: x.rate, dividendYield: x.q, type: z.type, marketPrice: z.marketPrice })); return { ...z, iv: iv ? iv.volatility : null }; });
       panel.append(table([{ t: "Strike", f: (z) => nf(z.strike) }, { t: "Tipo", l: 1, k: "type" }, { t: "Prima", f: (z) => nf(z.marketPrice, 4) }, { t: "Días", k: "days" }, { t: "σ implícita", f: (z) => (z.iv == null ? "n/d" : pf(z.iv)) }, { t: "", f: (z) => h("button", { class: "sm", onclick: () => { qs.splice(qs.indexOf(qs.find((y) => y.strike === z.strike && y.type === z.type && y.days === z.days)), 1); renderView(); } }, "Quitar") }], rows));
       const cal = tryCalc(() => E.calibrateVolatility(qs.map((z) => ({ strike: z.strike, type: z.type, marketPrice: z.marketPrice, timeYears: E.yearsFromDays(z.days) })), x.spot, x.rate, x.q), (er) => panel.append(errBox(er)));
-      if (cal) panel.append(h("div", { class: "note ok", style: "margin-top:8px" }, h("b", null, "σ calibrada: " + pf(cal.volatility)), ` · RMSE de precio ${nf(cal.rmse, 5)} · ${cal.quotesUsed} cotización(es) · ${cal.method}. `, h("button", { class: "sm pri", onclick: () => { o.vol = +(cal.volatility * 100).toFixed(2); renderView(); } }, "Usar esta σ")));
+      if (cal) panel.append(h("div", { class: "note ok", style: "margin-top:8px" }, h("b", null, "σ calibrada: " + pf(cal.volatility)), ` · RMSE de precio ${nf(cal.rmse, 5)} · ${cal.quotesUsed} cotización(es) · ${cal.method}. `, h("button", { class: "sm pri", onclick: () => { o.vol = +(cal.volatility * 100).toFixed(2); o.volSrc = "Calibrada a " + cal.quotesUsed + " cotización(es)"; renderView(); } }, "Usar esta σ")));
       if (rows.filter((z) => z.iv != null).length >= 2) panel.append(h("div", { class: "cap" }, "Sonrisa de volatilidad (σ implícita por strike):"), chartBox({ height: 200, xs: rows.filter((z) => z.iv != null).map((z) => z.strike), xfmt: (v) => nf(v, 0), padL: 56, panes: [{ series: [{ kind: "line", y: rows.filter((z) => z.iv != null).map((z) => z.iv), color: PAL[0], name: "σ imp", fmt: (v) => pf(v, 1) }], yfmt: (v) => pf(v, 0) }] }));
     }
     out.append(panel);
@@ -1303,6 +1456,8 @@ function pageCoberturas() {
   const o = optState(); const page = h("div", { class: "page" });
   if (COB.lastKey !== S.key) { COB.lastKey = S.key; COB.ks = {}; COB.stop = ""; }
   page.append(pageHead(9, "Coberturas", "Straddle, strangle, mariposa, caps, floors, collares y futuros de compra/venta con stop loss. Las primas se calculan con Black-Scholes y la σ del módulo 8 (más un recargo opcional que imita el diferencial compra-venta).", getDaily(S.key)));
+  page.append(recPanel((id) => { if (id) { COB.id = id; COB.ks = {}; COB.stop = ""; } renderView(); if (id) setTimeout(() => { const t = document.getElementById("cob-detail"); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); }));
+  page.append(volPanel(() => renderView()));
   const out = h("div", { style: "display:flex;flex-direction:column;gap:14px" });
   const re = () => calc();
   const def = STRAT_DEFS.find((d) => d.id === COB.id); const env0 = stratEnv(); const dk = defaultKs(COB.id, env0.spot);
@@ -1312,7 +1467,7 @@ function pageCoberturas() {
   const isFut = COB.id === "futL" || COB.id === "futS";
   const stopI = num("c-stop", COB.stop === "" ? "" : COB.stop, { step: "any" }); stopI.placeholder = "auto"; stopI.onchange = () => { COB.stop = stopI.value === "" ? "" : parseFloat(stopI.value); re(); };
   const stopP = num("c-stopp", COB.stopPct, { step: 0.5, min: 0.1 }); stopP.onchange = () => { COB.stopPct = parseFloat(stopP.value) || 5; re(); };
-  page.append(h("div", { class: "panel" }, h("h2", null, "Estrategia", h("span", { class: "tools" }, h("span", { class: "mute" }, `Spot ${nf(env0.spot)} · σ ${pf(env0.vol)} · ${o.days} d · ${o.contracts} contrato(s) · ${env0.mult} títulos`), h("a", { href: "#opciones" }, "Cambiar σ, plazo, contratos (módulo 8)"))),
+  page.append(h("div", { class: "panel", id: "cob-detail" }, h("h2", null, "Estrategia", h("span", { class: "tools" }, h("span", { class: "mute" }, `Spot ${nf(env0.spot)} · σ ${pf(env0.vol)} (${o.volSrc || "manual"}) · ${o.days} d · ${o.contracts} contrato(s) · ${env0.mult} títulos`), h("a", { href: "#opciones" }, "Cambiar σ, plazo, contratos (módulo 8)"))),
     h("div", { class: "controls" }, field("Estrategia", sSel, "c-strat"), ksF, isFut ? [field("Stop loss (precio)", stopI, "c-stop"), field("o distancia del stop (%)", stopP, "c-stopp")] : field("Recargo sobre primas (%)", mk, "c-mk"))));
   page.append(out);
   function calc() {
@@ -1436,6 +1591,132 @@ function pageEscenarios() {
   page.append(...panels);
   SCN.last = all; page.append(h("div", { class: "foot", style: "padding:0" }, DISCLAIMER));
   return page;
+}
+/* ===== recomendador.js ===== */
+/* ---------- Recomendador de cobertura por activo (módulo 9) ----------
+   Reglas explícitas y transparentes sobre las características del activo (volatilidad relativa,
+   tendencia, beta, caídas, dividendos, liquidez, existencia de contratos). No es un pronóstico:
+   el usuario fija el objetivo y su visión, y la herramienta ordena las estrategias con razones. */
+
+const REC = { obj: "larga", view: "auto", key: null };
+const REC_OBJ = {
+  larga: { t: "Proteger una posición larga en la acción", d: "Tengo (o tendré) acciones y quiero limitar pérdidas." },
+  corta: { t: "Fijar el costo de una compra futura / cubrir una venta corta", d: "Voy a comprar el activo después, o estoy corto y temo un alza." },
+  vol: { t: "Aprovechar volatilidad o un rango (sin posición previa)", d: "Busco beneficiarme de un movimiento fuerte o de calma." },
+};
+const STRAT_TXT = {
+  floor: { how: "Compras la acción y una put. Si el precio cae por debajo del strike de la put, la put gana y compensa la pérdida de la acción; si el precio sube, conservas toda la ganancia menos la prima. Es un seguro: pagas por adelantado y tu pérdida máxima queda definida.", tradeoff: "La prima es un costo seguro; se pierde si el precio no cae.", avoid: "Poco atractiva cuando la volatilidad está muy alta (primas caras)." },
+  collar: { how: "Compras la acción, compras una put (protección) y vendes una call (financiamiento). La prima de la call cobrada paga total o parcialmente la put. Tu pérdida queda acotada abajo y tu ganancia queda acotada arriba, a un costo cercano a cero.", tradeoff: "Renuncias a las ganancias por encima del strike de la call.", avoid: "No conviene si esperas un rally fuerte: la call vendida limita tu subida." },
+  futS: { how: "Vendes un futuro sobre la acción mientras mantienes las acciones. Una caída del precio pierde en la acción pero gana en el futuro, y viceversa: queda cubierta casi toda la exposición al precio, sin pagar prima.", tradeoff: "Eliminas también las ganancias si sube; hay margen y llamadas de margen diarias, y base entre futuro y spot.", avoid: "No conviene si tu visión es alcista o si no quieres exponerte a llamadas de margen." },
+  stock: { how: "Mantener la acción sin cobertura. Se muestra como referencia para comparar costo y protección de las demás estrategias.", tradeoff: "Toda la exposición a caídas queda abierta.", avoid: "No se recomienda si el activo muestra volatilidad alta, beta elevada o tendencia bajista." },
+  cap: { how: "Si debes comprar el activo en el futuro, compras una call: fija un precio máximo de compra (el strike) y, si el precio baja, compras más barato perdiendo solo la prima.", tradeoff: "Pagas una prima aunque el precio no suba.", avoid: "Poco atractiva con volatilidad muy alta (call cara)." },
+  futL: { how: "Compras un futuro: fijas hoy el precio de una compra futura, sin prima. Sube o baja uno a uno con el activo.", tradeoff: "Si el precio baja, pierdes frente a esperar; hay margen y llamadas de margen.", avoid: "No conviene si crees que el precio puede bajar o si no toleras llamadas de margen." },
+  callL: { how: "Compras una call: ganancia ilimitada si sube, pérdida limitada a la prima. Cobertura asimétrica para quien teme un alza y no quiere perder si baja.", tradeoff: "La prima se pierde si el precio no supera el strike más la prima.", avoid: "Cara cuando la volatilidad está alta." },
+  strL: { how: "Compras una call y una put con el mismo strike (ATM). Ganas si el precio se mueve mucho en cualquier dirección; pierdes la prima total si queda cerca del strike al vencimiento.", tradeoff: "Es la estrategia de volatilidad más cara: necesitas un movimiento mayor al costo de ambas primas.", avoid: "No conviene cuando la volatilidad ya está alta (pagas por un movimiento que el mercado ya descuenta)." },
+  sgL: { how: "Compras una put OTM y una call OTM. Es como el straddle pero más barato, a cambio de necesitar un movimiento mayor para ganar.", tradeoff: "Probabilidad de ganar menor que en el straddle; pérdida máxima = prima total.", avoid: "No conviene si esperas movimientos moderados." },
+  bfL: { how: "Compras una call baja y una alta, y vendes dos calls centrales. Gana si el precio termina cerca del strike central; la pérdida máxima es la prima pagada y la ganancia máxima también está acotada.", tradeoff: "Ganancia acotada y solo en un rango estrecho.", avoid: "No conviene si esperas un movimiento fuerte." },
+  bfS: { how: "Opuesta a la mariposa larga: gana si el precio se aleja del centro; ganancia máxima limitada y pérdida limitada.", tradeoff: "Ganancia pequeña respecto al riesgo; se cobra una prima.", avoid: "No conviene si esperas calma." },
+  putL: { how: "Compras una put: gana si el precio cae, con pérdida limitada a la prima. Útil como cobertura o apuesta bajista con riesgo acotado.", tradeoff: "La prima se pierde si el precio no cae.", avoid: "Cara con volatilidad alta." },
+};
+
+function recProfile() {
+  const ds = getDaily(S.key), bars = ds.bars, cl = bars.map((b) => b.close), n = cl.length, e = entry();
+  const p = { n, key: S.key, spot: cl[n - 1], hasFuture: e.hasFuture, hasOption: e.hasOption, verified: !!e.verified, simulated: ds.provenance === "ejemplo" };
+  const hv = (w) => { const v = histVol(w); return v ? v.value : null; };
+  p.hv20 = hv(20); p.hv60 = hv(60); p.hv252 = hv(252);
+  try { const w = Math.min(60, n - 3); const rv = E.rollingVolatility(cl, w, 252).filter((x) => x != null).slice(-756); if (rv.length >= 60 && p.hv60 != null) { p.volPct = rv.filter((x) => x <= rv[rv.length - 1]).length / rv.length; p.volCur = rv[rv.length - 1]; p.volPctN = rv.length; } } catch (er) { /* sin percentil */ }
+  const ma = (k) => { if (n < k) return null; const s = E.sma(cl, k); return s[s.length - 1]; };
+  p.sma50 = ma(50); p.sma200 = ma(200);
+  p.ret1m = n > 22 ? cl[n - 1] / cl[n - 22] - 1 : null; p.ret6m = n > 126 ? cl[n - 1] / cl[n - 127] - 1 : null; p.ret1y = n > 252 ? cl[n - 1] / cl[n - 253] - 1 : null;
+  let ts = 0, tn = 0; if (p.sma50) { ts += p.spot > p.sma50 ? 1 : -1; tn++; } if (p.sma200) { ts += p.spot > p.sma200 ? 1 : -1; tn++; } if (p.ret6m != null) { ts += Math.max(-1, Math.min(1, p.ret6m / 0.2)); tn++; }
+  p.trend = tn ? ts / tn : 0;
+  const w252 = cl.slice(-252); p.dd = p.spot / Math.max(...w252) - 1;
+  try { const r = E.returns(cl.slice(-756), "log"); p.skew = E.skewness(r); p.kurt = E.excessKurtosis(r); } catch (er) { /* sin momentos */ }
+  const bds = getDaily(BENCH_KEY);
+  if (bds.provenance !== "ejemplo") { try { const a = E.resample(bars, "semanal"), b = E.resample(bds.bars, "semanal"), al = E.alignByDate(a, b); const m = Math.min(al.a.length, 157); const bt = E.beta(E.returns(al.a.slice(-m)), E.returns(al.b.slice(-m)), 52); p.beta = bt.beta; p.corr = bt.correlation; } catch (er) { /* sin beta */ } }
+  const dv = (DIV_RAW[S.key] || []); if (dv.length) { const lim = new Date(today() + "T00:00:00Z").getTime() - 365 * 864e5; const tot = dv.filter(([d]) => new Date(d + "T00:00:00Z").getTime() >= lim).reduce((a, [, x]) => a + x, 0); p.divY = tot / p.spot; }
+  const last = bars.slice(-250); p.zeroVol = last.length ? last.filter((x) => x.volume === 0).length / last.length : 0;
+  return p;
+}
+function recView(p) { return p.trend > 0.35 ? "alcista" : p.trend < -0.35 ? "bajista" : "neutral"; }
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
+
+function recScore(id, obj, p, view) {
+  const why = [], vp = p.volPct == null ? 0.5 : p.volPct, rich = vp > 0.65, cheap = vp < 0.35, t = p.trend, bear = clamp01(-t), bull = clamp01(t);
+  let s = 0;
+  const volTxt = p.volPct == null ? `σ 60 d ${pf(p.hv60)}` : `σ 60 d ${pf(p.hv60)}, en el percentil ${Math.round(vp * 100)} de su propia historia de 3 años`;
+  const volWhy = (txt) => why.push(`Volatilidad: ${volTxt}. ${txt}`);
+  const trendTxt = `${view === "alcista" ? "alcista" : view === "bajista" ? "bajista" : "sin tendencia clara"}${p.sma200 ? ` (precio ${p.spot > p.sma200 ? "sobre" : "bajo"} su media de 200 días${p.ret6m != null ? `, ${pf(p.ret6m, 0)} en 6 meses` : ""})` : ""}`;
+  if (obj === "larga") {
+    if (id === "floor") { s = 50 + 30 * (1 - vp) + (view === "alcista" ? 10 : view === "neutral" ? 4 : 0); volWhy(cheap ? "Las primas están baratas respecto a su historia: buen momento para comprar el seguro." : rich ? "Las primas están caras: el seguro cuesta más de lo habitual." : "Primas en nivel intermedio."); why.push(`Visión ${trendTxt}: la put protege sin renunciar a subidas.`); }
+    if (id === "collar") { s = 50 + 30 * vp + (view === "neutral" ? 12 : view === "alcista" ? -6 : 4); volWhy(rich ? "La call vendida paga una prima alta que financia la put." : cheap ? "La call vendida paga poca prima: el collar financia menos de la put." : "Financiamiento intermedio."); why.push(`Visión ${trendTxt}: ${view === "alcista" ? "el collar limitaría parte del alza." : view === "neutral" ? "al no esperar subida fuerte, ceder el alza cuesta poco." : "la protección importa más que el alza."}`); }
+    if (id === "futS") { s = 45 + 22 * bear + 12 * (p.beta != null && p.beta > 1.2 ? 1 : 0) + 10 * vp + (view === "bajista" ? 15 : 0) - (view === "alcista" ? 25 : 0); why.push(`Visión ${trendTxt}.`); if (p.beta != null) why.push(`Beta ${nf(p.beta, 2)} frente al benchmark: ${p.beta > 1.2 ? "la acción amplifica al mercado; cubrir todo el precio reduce bastante riesgo." : "exposición al mercado moderada."}`); volWhy(rich ? "Con primas caras, cubrir con futuro (sin prima) resulta más económico." : "El futuro no paga prima, por lo que su costo no depende de la volatilidad."); }
+    if (id === "stock") { s = 25 + 25 * bull + 20 * (1 - vp) - 15 * (p.dd < -0.2 ? 1 : 0); why.push(`Referencia: sin cobertura la exposición a caídas es completa. Caída actual desde el máximo de 12 meses: ${pf(p.dd, 1)}.`); }
+    if (p.dd < -0.15 && id !== "stock") why.push(`El activo ya cae ${pf(p.dd, 0)} desde su máximo de 12 meses: ${id === "futS" ? "cubrir con futuro evita más pérdida, pero no recupera lo caído." : "proteger ahora fija un piso cercano al precio actual."}`);
+    if (p.divY != null && p.divY > 0.02 && (id === "futS")) why.push(`Rendimiento por dividendo ${pf(p.divY, 1)}: el precio teórico del futuro ya descuenta el costo de acarreo neto de dividendos.`);
+  } else if (obj === "corta") {
+    if (id === "cap") { s = 52 + 28 * (1 - vp) + (view === "alcista" ? 15 : 0) - (view === "bajista" ? 8 : 0); volWhy(cheap ? "La call está barata: fijar el precio máximo de compra cuesta poco." : rich ? "La call está cara." : "Prima en nivel intermedio."); why.push(`Visión ${trendTxt}.`); }
+    if (id === "futL") { s = 45 + 22 * bull + 8 * vp + (view === "alcista" ? 15 : 0) - (view === "bajista" ? 22 : 0); why.push(`Visión ${trendTxt}: ${view === "alcista" ? "fijar hoy el precio evita pagar más después." : view === "bajista" ? "si el precio baja, el futuro te dejaría comprando más caro que el mercado." : "sin sesgo claro, el futuro fija el costo pero elimina el beneficio de una baja."}`); volWhy(rich ? "El futuro no paga prima y resulta más económico que la call." : "El costo del futuro no depende de la volatilidad."); }
+    if (id === "callL") { s = 44 + 26 * (1 - vp) + (view === "alcista" ? 12 : 0); volWhy(cheap ? "Prima baja respecto a su historia." : rich ? "Prima alta." : "Prima intermedia."); why.push(`Visión ${trendTxt}.`); }
+  } else {
+    const comp = p.hv20 != null && p.hv252 != null && p.hv20 < 0.8 * p.hv252;
+    if (id === "strL") { s = 40 + 38 * (1 - vp) + (comp ? 12 : 0) + (p.kurt != null && p.kurt > 3 ? 4 : 0); volWhy(cheap ? "Primas baratas: el straddle es más accesible." : rich ? "Primas caras: el mercado ya espera un movimiento grande." : "Primas intermedias."); if (comp) why.push(`σ de 20 días (${pf(p.hv20)}) muy por debajo de la de 1 año (${pf(p.hv252)}): la volatilidad está comprimida y suele preceder movimientos.`); if (p.kurt != null) why.push(`Curtosis en exceso ${nf(p.kurt, 1)}: ${p.kurt > 3 ? "colas gordas, los movimientos extremos son más frecuentes que en una normal." : "colas cercanas a las de una normal."}`); }
+    if (id === "sgL") { s = 38 + 28 * (1 - vp) + (rich ? 8 : 0) + ((p.hv60 || 0) > 0.45 ? 6 : 0) + (comp ? 8 : 0); volWhy(rich ? "Con primas altas, el strangle (más barato) reduce el desembolso frente al straddle." : cheap ? "Con primas bajas, el straddle suele ser mejor." : "Costo intermedio."); if (comp) why.push(`Volatilidad de corto plazo comprimida (σ20 ${pf(p.hv20)} vs σ1a ${pf(p.hv252)}).`); }
+    if (id === "bfL") { s = 32 + 38 * vp + (view === "neutral" ? 20 : view === "alcista" ? -4 : -4); volWhy(rich ? "Primas altas favorecen estrategias que venden las opciones centrales." : "Con primas bajas, la mariposa ofrece poca ganancia relativa."); why.push(`Visión ${trendTxt}: ${view === "neutral" ? "un mercado sin dirección favorece que el precio termine cerca del centro." : "una tendencia marcada reduce la probabilidad de terminar cerca del centro."}`); }
+    if (id === "bfS") { s = 30 + 28 * (1 - vp) + (view !== "neutral" ? 8 : -8); volWhy(cheap ? "Primas bajas: la mariposa corta cobra poco pero con riesgo limitado." : "Cobra una prima moderada."); why.push(`Visión ${trendTxt}.`); }
+  }
+  // restricciones de instrumentos
+  const needsF = ["futS", "futL"].includes(id), needsO = !needsF && id !== "stock"; let blocked = null;
+  if (needsF && p.hasFuture === false) blocked = "No hay contrato de futuro listado para esta emisora (según el catálogo).";
+  if (needsO && p.hasOption === false) blocked = "No hay opciones listadas para esta emisora (según el catálogo).";
+  if (p.zeroVol > 0.2 && id !== "stock") why.push(`Liquidez: ${pf(p.zeroVol, 0)} de los últimos 250 días sin volumen en Yahoo; confirma la liquidez real de los contratos en MexDer.`);
+  return { id, score: Math.round(Math.max(0, Math.min(100, s))), why, blocked };
+}
+const REC_IDS = { larga: ["floor", "collar", "futS", "stock"], corta: ["cap", "futL", "callL"], vol: ["strL", "sgL", "bfL", "bfS"] };
+
+function recPanel(onApply) {
+  if (REC.key !== S.key) { REC.key = S.key; }
+  const p = recProfile(), autoView = recView(p), view = REC.view === "auto" ? autoView : REC.view, env = stratEnv();
+  const wrap = h("div", { class: "panel rec" }, h("h2", null, "Recomendación de cobertura para " + S.key, h("span", { class: "mute" }, "reglas explícitas sobre las características del activo")));
+  const oSel = sel("rec-obj", Object.entries(REC_OBJ).map(([k, v]) => [k, v.t]), REC.obj); oSel.onchange = () => { REC.obj = oSel.value; onApply(); };
+  const vSel = sel("rec-view", [["auto", `Automática (${autoView})`], ["alcista", "Alcista"], ["neutral", "Neutral / lateral"], ["bajista", "Bajista"]], REC.view); vSel.onchange = () => { REC.view = vSel.value; onApply(); };
+  wrap.append(h("div", { class: "controls" }, field("Objetivo", oSel, "rec-obj"), field("Visión del mercado", vSel, "rec-view")), h("div", { class: "cap" }, REC_OBJ[REC.obj].d + " La visión automática sale de las medias de 50 y 200 días y del rendimiento a 6 meses; puedes imponer la tuya."));
+  // perfil del activo
+  const k = (l, v, s) => kpi(l, v, s || "");
+  wrap.append(h("div", { class: "kpis", style: "margin-top:12px" },
+    k("σ 60 días", p.hv60 == null ? "n/d" : pf(p.hv60), p.volPct == null ? "" : `percentil ${Math.round(p.volPct * 100)} de su historia`),
+    k("σ 20 d / 1 año", p.hv20 == null ? "n/d" : `${pf(p.hv20, 0)} / ${p.hv252 == null ? "n/d" : pf(p.hv252, 0)}`, "comprimida si σ20 ≪ σ1a"),
+    k("Tendencia", view === "alcista" ? "Alcista" : view === "bajista" ? "Bajista" : "Neutral", p.ret6m == null ? "" : `${pf(p.ret6m, 1)} en 6 meses`),
+    k("Beta vs IPC", p.beta == null ? "n/d" : nf(p.beta, 2), p.beta == null ? "sin benchmark real" : "semanal, ~3 años"),
+    k("Caída desde máx. 12 m", pf(p.dd, 1)),
+    k("Dividendo (12 m)", p.divY == null ? "n/d" : pf(p.divY, 1)),
+    k("Contratos", `${p.hasFuture === true ? "Fut ✓" : p.hasFuture === false ? "Fut ✗" : "Fut ?"} · ${p.hasOption === true ? "Opc ✓" : p.hasOption === false ? "Opc ✗" : "Opc ?"}`, p.verified ? "verificado" : "confirma en MexDer")));
+  if (p.simulated) wrap.append(h("div", { class: "note warn", style: "margin-top:10px" }, "Esta emisora usa datos simulados: la recomendación no refleja el activo real."));
+  const all = REC_IDS[REC.obj].map((id) => recScore(id, REC.obj, p, view)).sort((a, b) => (a.blocked ? 1 : 0) - (b.blocked ? 1 : 0) || (a.id === "stock" ? 1 : 0) - (b.id === "stock" ? 1 : 0) || b.score - a.score);
+  const cards = h("div", { class: "rec-cards" });
+  all.forEach((r, i) => {
+    const def = STRAT_DEFS.find((d) => d.id === r.id), tx = STRAT_TXT[r.id] || {}; let cost = null;
+    if (!r.blocked && r.id !== "stock") { try { let st = buildStrat(r.id, env); if (r.id === "futS" && REC.obj === "larga") { const sk = buildStrat("stock", env); st = { name: "Acción + futuro corto", legs: [...sk.legs, ...st.legs], commissionPerContract: st.commissionPerContract }; } const a = E.analyzeStrategy(st, { points: 161, maxPrice: env.spot * 2.2 }), base = capitalBase(st, env, a); cost = { a, base, st }; } catch (er) { /* sin costo */ } }
+    const tag = r.blocked ? "No disponible" : r.id === "stock" ? "Referencia" : i === 0 ? "Recomendada" : "Alternativa";
+    const money0 = (x) => money(x, 0);
+    const metrics = cost ? h("div", { class: "rec-m" },
+      h("div", null, h("span", null, "Prima neta"), h("b", null, money0(cost.a.netPremium)), h("em", null, cost.a.netPremium > 0 ? "se paga" : cost.a.netPremium < 0 ? "se recibe" : "sin prima")),
+      h("div", null, h("span", null, "% de la base"), h("b", null, cost.base.v > 0 ? pf(cost.a.netPremium / cost.base.v, 2) : "—"), h("em", null, cost.base.label)),
+      h("div", null, h("span", null, "Pérdida máx."), h("b", null, cost.a.maxLoss.unlimited ? "ilimitada" : cost.a.maxLoss.value == null ? "—" : cost.a.maxLoss.value >= 0 ? "sin pérdida" : money0(cost.a.maxLoss.value))),
+      h("div", null, h("span", null, "Ganancia máx."), h("b", null, cost.a.maxProfit.unlimited ? "ilimitada" : cost.a.maxProfit.value == null ? "—" : money0(cost.a.maxProfit.value)))) : null;
+    cards.append(h("div", { class: "rec-card" + (i === 0 && !r.blocked ? " best" : "") + (r.blocked ? " off" : "") },
+      h("div", { class: "rec-head" }, h("span", { class: "rec-tag t" + (r.blocked ? "x" : i === 0 ? "1" : i < 3 ? "2" : "3") }, tag), h("b", null, def ? def.t : r.id), h("span", { class: "rec-score" }, r.blocked ? "—" : r.score + "/100")),
+      r.blocked ? null : h("div", { class: "rec-bar" }, h("i", { style: `width:${r.score}%` })),
+      r.blocked ? h("div", { class: "note warn" }, r.blocked) : null,
+      h("div", { class: "rec-sec" }, h("h3", null, "Por qué para " + S.key), h("ul", null, r.why.map((w) => h("li", null, w)))),
+      h("div", { class: "rec-sec" }, h("h3", null, "Cómo funciona"), h("p", null, tx.how || "")),
+      h("div", { class: "rec-two" }, h("div", null, h("h3", null, "A cambio"), h("p", null, tx.tradeoff || "")), h("div", null, h("h3", null, "Cuándo evitarla"), h("p", null, tx.avoid || ""))),
+      metrics,
+      h("div", { class: "tools", style: "margin-top:10px" }, h("button", { class: "sm" + (i === 0 && !r.blocked ? " pri" : ""), disabled: r.id === "stock" || !!r.blocked, onclick: () => onApply(r.id) }, r.id === "stock" ? "Es la referencia" : "Analizar en detalle ↓"))));
+  });
+  wrap.append(cards);
+  wrap.append(h("div", { class: "note", style: "margin-top:12px" }, h("b", null, "Cómo leer esto. "), "El puntaje (0 a 100) sale de reglas fijas: más volatilidad relativa favorece vender opciones o usar futuros, menos volatilidad favorece comprarlas; la tendencia y tu visión inclinan hacia coberturas que conservan o ceden el alza. Las primas y pérdidas máximas se calculan con Black-Scholes y la σ elegida arriba, por lo que son teóricas. Es una guía académica basada en datos históricos, no un pronóstico. " + DISCLAIMER));
+  return wrap;
 }
 /* ===== report.js ===== */
 /* ---------- datos del reporte (compartido por XLS y PDF) ---------- */
@@ -1610,21 +1891,29 @@ const MODS = [
 ];
 function buildShell() {
   const root = $("#root"); root.innerHTML = "";
-  const side = h("aside", { class: "side", id: "side" }, h("div", { class: "brand" }, h("b", null, "DERIVADOS·MX"), h("span", null, "Plataforma de análisis MexDer")), h("nav", { class: "nav", id: "nav" }));
+  const side = h("aside", { class: "side", id: "side" }, h("div", { class: "brand" }, h("div", { class: "logo" }, h("i"), h("i"), h("i")), h("div", null, h("b", null, "Derivados MX"), h("span", null, "Análisis y coberturas · MexDer"))), h("nav", { class: "nav", id: "nav" }));
   const main = h("div", { class: "main" }, h("div", { class: "top", id: "top" }), h("div", { id: "view", style: "display:flex;flex-direction:column;flex:1;min-width:0" }), h("div", { class: "foot" }, DISCLAIMER + " Los datos de ejemplo son simulados."));
   root.append(h("div", { class: "app" }, side, main));
 }
+const NAV_GROUPS = { 1: "Análisis del activo", 7: "Derivados y coberturas", 12: "Reportes" };
 function renderNav() {
   const nav = $("#nav"); nav.innerHTML = "";
-  MODS.forEach((m, i) => { if (i === 1) nav.append(h("div", { class: "sep" })); nav.append(h("a", { href: "#" + m.id, class: S.route === m.id ? "on" : "", onclick: () => $("#side").classList.remove("open") }, h("i", null, m.n || "•"), m.t)); });
-  nav.append(h("div", { class: "sep" }), h("a", { href: "#", onclick: (e) => { e.preventDefault(); paramsModal(); } }, h("i", null, "⚙"), "Supuestos de mercado"));
+  MODS.forEach((m, i) => {
+    const num = parseInt(m.n, 10); const g = NAV_GROUPS[num]; const grp = num >= 12 ? "r" : num >= 7 ? "d" : num >= 1 ? "a" : "c";
+    if (i === 0) nav.append(h("div", { class: "grp" }, "Inicio")); if (g) nav.append(h("div", { class: "grp" }, g));
+    nav.append(h("a", { href: "#" + m.id, class: (S.route === m.id ? "on " : "") + "g-" + grp, onclick: () => $("#side").classList.remove("open") }, h("i", null, m.n || "•"), m.t));
+  });
+  nav.append(h("div", { class: "grp" }, "Ajustes"), h("a", { href: "#", class: "g-c", onclick: (e) => { e.preventDefault(); paramsModal(); } }, h("i", null, "⚙"), "Supuestos de mercado"));
+}
+function quoteChip() {
+  try { const b = getDaily(S.key).bars, a = b[b.length - 1], c = b[b.length - 2]; const ch = c ? a.close / c.close - 1 : 0; return h("div", { class: "quote" }, h("b", null, nf(a.close, 2)), h("span", { class: ch >= 0 ? "up" : "down" }, (ch >= 0 ? "▲ " : "▼ ") + pf(Math.abs(ch), 2)), h("em", null, a.date)); } catch (er) { return h("span"); }
 }
 function renderTop() {
   const top = $("#top"); top.innerHTML = "";
   const dl = h("datalist", { id: "keys" }, S.catalog.map((c) => h("option", { value: c.mexderKey }, c.name)));
   const inp = h("input", { list: "keys", value: S.key, "aria-label": "Emisora", onchange: (e) => { const v = e.target.value.trim().toUpperCase(); if (S.catalog.some((c) => c.mexderKey === v)) selectKey(v); else { toast("Esa clave no está en el catálogo: agrégala en «Catálogo y fuentes»."); e.target.value = S.key; } }, onfocus: (e) => e.target.select() });
   top.append(h("button", { class: "burger", "aria-label": "Menú", onclick: () => $("#side").classList.toggle("open") }, "☰"),
-    h("div", { class: "sym" }, inp, dl, h("span", { class: "mute" }, entry().name)), provBadge(getDaily(S.key).provenance),
+    h("div", { class: "sym" }, inp, dl, h("span", { class: "mute" }, entry().name)), quoteChip(), provBadge(getDaily(S.key).provenance),
     seg([["diario", "Diario"], ["semanal", "Semanal"], ["mensual", "Mensual"]], S.cycle, (v) => { S.cycle = v; saveState(); renderAll(); }),
     seg(RANGES.map((r) => [r, r]), S.range, (v) => { S.range = v; saveState(); renderAll(); }));
 }
