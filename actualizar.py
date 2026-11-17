@@ -26,6 +26,18 @@ EMISORAS = {  # clave: (nombre, símbolo Yahoo)
  "VOLARA":("Volaris A","VOLARA.MX"),"WALMEX":("Wal-Mart de México","WALMEX.MX"),
 }
 BENCH = ("__BENCH__", "^MXX")
+
+# --- EUA (NASDAQ): sólo precios. Se guardan aparte, en live.json -> "us", para no mezclarlos con las emisoras de MexDer.
+EMISORAS_US = {  # clave (ticker): nombre
+ "MSFT":"Microsoft","EBAY":"eBay","CSCO":"Cisco","GT":"Goodyear","KMB":"Kimberly-Clark","MNST":"Monster Beverage",
+ "ADBE":"Adobe","AAPL":"Apple","CROX":"Crocs","AMZN":"Amazon","COST":"Costco","INTC":"Intel","VRTX":"Vertex Pharmaceuticals","NVDA":"NVIDIA",
+ "GOOGL":"Alphabet A","META":"Meta Platforms","TSLA":"Tesla","AVGO":"Broadcom","NFLX":"Netflix","PEP":"PepsiCo","AMD":"AMD",
+ "QCOM":"Qualcomm","TXN":"Texas Instruments","AMGN":"Amgen","GILD":"Gilead Sciences","SBUX":"Starbucks","MDLZ":"Mondelez",
+ "ISRG":"Intuitive Surgical","BKNG":"Booking Holdings","INTU":"Intuit","CMCSA":"Comcast","HON":"Honeywell","PYPL":"PayPal",
+ "MU":"Micron","REGN":"Regeneron",
+}
+BENCH_US = {"__NASDAQ__":("NASDAQ Composite","^IXIC"), "__NDX__":("NASDAQ 100","^NDX"), "__SP500__":("S&P 500","^GSPC")}
+DIAS_US = 1100   # ~3 años de historia por ticker (mantiene el archivo ligero)
 MAPA = {
  "ingresos":["Total Revenue","Operating Revenue"], "utilidad_bruta":["Gross Profit"],
  "utilidad_operativa":["Operating Income","Total Operating Income As Reported"], "ebitda":["EBITDA","Normalized EBITDA"],
@@ -47,12 +59,12 @@ REC = {"strong_buy":"compra fuerte","buy":"compra","hold":"mantener","underperfo
 EPOCH = dt.date(2000, 1, 1)
 
 
-def codificar_precios(df):
+def codificar_precios(df, dias=3660):
     """df con índice de fechas y columnas Open, High, Low, Close, Volume -> {'start': días, 'd': 'dd,o,h,l,c,v;...'} (precios en centavos)."""
     import pandas as pd
     df = df.sort_index().dropna(subset=["Close"])
     df = df[(df[["Open", "High", "Low", "Close"]] > 0).all(axis=1)]
-    desde = (dt.date.today() - dt.timedelta(days=3660))
+    desde = (dt.date.today() - dt.timedelta(days=dias))
     df = df[[i.date() >= desde for i in df.index]]
     if df.empty: return None
     o, h, l, c = [(df[x] * 100).round().astype(int) for x in ["Open", "High", "Low", "Close"]]
@@ -153,6 +165,28 @@ def main(fuente=None, salida=SALIDA, hoy=None):
             time.sleep(1)
         live["status"][clave] = st
         print(("ok  " if st.get("ok") else "FALLO"), clave, st.get("last", st.get("error", "")))
+    # ---- EUA: sólo precios; si un ticker falla se conserva lo anterior y NO afecta a México.
+    us_prev = previo.get("us", {}) if isinstance(previo.get("us"), dict) else {}
+    us = {"meta": {k: {"name": n, "sym": k} for k, n in EMISORAS_US.items()}, "prices": dict(us_prev.get("prices", {})), "status": {}}
+    us["meta"].update({k: {"name": n, "sym": sym} for k, (n, sym) in BENCH_US.items()})
+    objetivos_us = [(k, k) for k in EMISORAS_US] + [(k, sym) for k, (n, sym) in BENCH_US.items()]
+    for clave, sym in objetivos_us:
+        st = {"sym": sym}
+        try:
+            df = fuente.precios(sym)
+            enc = codificar_precios(df, DIAS_US) if df is not None else None
+            if enc:
+                us["prices"][clave] = {"start": enc["start"], "d": enc["d"]}; st.update(ok=True, last=enc["last"])
+            else:
+                st.update(ok=False, error="sin precios; se conservan los anteriores")
+        except Exception as e:
+            st.update(ok=False, error=str(e)[:120])
+        us["status"][clave] = st
+        print(("ok  US " if st.get("ok") else "FALLO US"), clave, st.get("last", st.get("error", "")))
+        time.sleep(0.5)
+    live["us"] = us
+    fallos_us = [k for k, v in us["status"].items() if not v.get("ok")]
+    print(f"EUA: {len(us['status'])-len(fallos_us)} ok, {len(fallos_us)} con fallo: {fallos_us}")
     salida.parent.mkdir(parents=True, exist_ok=True)
     salida.write_text(json.dumps(live, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     fallos = [k for k, v in live["status"].items() if not v.get("ok")]
