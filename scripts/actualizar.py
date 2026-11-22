@@ -36,7 +36,8 @@ EMISORAS_US = {  # clave (ticker): nombre
  "ISRG":"Intuitive Surgical","BKNG":"Booking Holdings","INTU":"Intuit","CMCSA":"Comcast","HON":"Honeywell","PYPL":"PayPal",
  "MU":"Micron","REGN":"Regeneron",
 }
-BENCH_US = {"__NASDAQ__":("NASDAQ Composite","^IXIC"), "__NDX__":("NASDAQ 100","^NDX"), "__SP500__":("S&P 500","^GSPC")}
+BENCH_US = {"__NASDAQ__":("NASDAQ Composite","^IXIC"), "__NDX__":("NASDAQ 100","^NDX"), "__SP500__":("S&P 500","^GSPC"), "__NQ__":("Futuro NASDAQ 100 (NQ)","NQ=F")}
+FX = {"USDMXN":("Dólar/Peso (referencia Yahoo, no es el FIX oficial)","MXN=X"), "EURMXN":("Euro/Peso","EURMXN=X")}   # tipo de cambio: 4 decimales
 DIAS_US = 1100   # ~3 años de historia por ticker (mantiene el archivo ligero)
 MAPA = {
  "ingresos":["Total Revenue","Operating Revenue"], "utilidad_bruta":["Gross Profit"],
@@ -59,7 +60,7 @@ REC = {"strong_buy":"compra fuerte","buy":"compra","hold":"mantener","underperfo
 EPOCH = dt.date(2000, 1, 1)
 
 
-def codificar_precios(df, dias=3660):
+def codificar_precios(df, dias=3660, esc=100):
     """df con índice de fechas y columnas Open, High, Low, Close, Volume -> {'start': días, 'd': 'dd,o,h,l,c,v;...'} (precios en centavos)."""
     import pandas as pd
     df = df.sort_index().dropna(subset=["Close"])
@@ -67,7 +68,7 @@ def codificar_precios(df, dias=3660):
     desde = (dt.date.today() - dt.timedelta(days=dias))
     df = df[[i.date() >= desde for i in df.index]]
     if df.empty: return None
-    o, h, l, c = [(df[x] * 100).round().astype(int) for x in ["Open", "High", "Low", "Close"]]
+    o, h, l, c = [(df[x] * esc).round().astype(int) for x in ["Open", "High", "Low", "Close"]]
     hh = pd.concat([h, o, c], axis=1).max(axis=1); ll = pd.concat([l, o, c], axis=1).min(axis=1)
     v = df["Volume"].fillna(0).astype(int)
     dias = [(i.date() - EPOCH).days for i in df.index]; prev = dias[0]; filas = []
@@ -185,6 +186,24 @@ def main(fuente=None, salida=SALIDA, hoy=None):
         print(("ok  US " if st.get("ok") else "FALLO US"), clave, st.get("last", st.get("error", "")))
         time.sleep(0.5)
     live["us"] = us
+    # ---- Tipo de cambio (4 decimales). Si falla, se conserva lo anterior y NO afecta a nada más.
+    fx_prev = previo.get("fx", {}) if isinstance(previo.get("fx"), dict) else {}
+    fx = {"esc": 10000, "meta": {k: {"name": n, "sym": sym} for k, (n, sym) in FX.items()}, "prices": dict(fx_prev.get("prices", {})), "status": {}}
+    for clave, (n, sym) in FX.items():
+        st = {"sym": sym}
+        try:
+            df = fuente.precios(sym)
+            enc = codificar_precios(df, DIAS_US, 10000) if df is not None else None
+            if enc:
+                fx["prices"][clave] = {"start": enc["start"], "d": enc["d"]}; st.update(ok=True, last=enc["last"])
+            else:
+                st.update(ok=False, error="sin precios; se conservan los anteriores")
+        except Exception as e:
+            st.update(ok=False, error=str(e)[:120])
+        fx["status"][clave] = st
+        print(("ok  FX " if st.get("ok") else "FALLO FX"), clave, st.get("last", st.get("error", "")))
+        time.sleep(0.5)
+    live["fx"] = fx
     fallos_us = [k for k, v in us["status"].items() if not v.get("ok")]
     print(f"EUA: {len(us['status'])-len(fallos_us)} ok, {len(fallos_us)} con fallo: {fallos_us}")
     salida.parent.mkdir(parents=True, exist_ok=True)
