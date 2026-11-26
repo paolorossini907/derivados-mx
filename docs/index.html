@@ -1881,6 +1881,14 @@ const NOTA_MX = () => S.catalog.map((c) => c.mexderKey).filter((k) => REAL_RAW[k
 const NOTA_US = () => Object.keys(usSrc().prices).filter((k) => !k.startsWith("__")).sort();
 const aid = (kind, key) => kind + ":" + key; const aparse = (id) => { const i = id.indexOf(":"); return [id.slice(0, i), id.slice(i + 1)]; };
 function aName(id) { const [k, key] = aparse(id); if (k === "MX") { const c = S.catalog.find((x) => x.mexderKey === key); return c ? c.name : key; } const m = usSrc().meta && usSrc().meta[key]; return m ? m.name : key; }
+const US_KEYS = ["MSFT", "EBAY", "CSCO", "GT", "KMB", "MNST", "ADBE", "AAPL", "CROX", "AMZN", "COST", "INTC", "VRTX", "NVDA"];
+const MX_PRIN = ["CEMEXCPO", "BIMBOA", "PE&OLES", "WALMEX", "GFNORTEO"];
+function SUBS_ALL() {
+  const mxAll = Object.keys(REAL_RAW).filter((k) => !US_KEYS.includes(k) && !k.startsWith("__"));
+  const mx = [...MX_PRIN.filter((k) => mxAll.includes(k)), ...mxAll.filter((k) => !MX_PRIN.includes(k)).sort()];
+  const us = NOTA.sel.filter((id) => aparse(id)[0] === "US");
+  return [...mx.map((k) => [aid("MX", k), k + " (MX)"]), ...us.map((id) => [id, aparse(id)[1] + " (EUA)"])];
+}
 function aBars(id) { const [k, key] = aparse(id); if (k === "MX") return REAL_RAW[key] ? getDaily(key).bars.map((b) => ({ date: b.date, close: b.close })) : null; return usBars(key); }
 function aBench(id) { return aparse(id)[0] === "MX" ? getDaily(BENCH_KEY).bars.map((b) => ({ date: b.date, close: b.close })) : (usBars("__NASDAQ__") || usBars("__SP500__")); }
 const BETA_PUB = { MSFT: 1.04, EBAY: 1.32, CSCO: 0.98, GT: 1.24, KMB: 0.28, MNST: 0.51, ADBE: 1.41, AAPL: 1.09, CROX: 1.5, AMZN: 1.5, COST: 0.87, INTC: 2.43, VRTX: 0.28, NVDA: 2.22 };
@@ -1940,7 +1948,7 @@ function rfSel() {
 function pageNotaPerfil() {
   const page = h("div", { class: "page" }); const m = nMontos(); const p = P();
   page.append(h("div", { class: "hero" }, h("h1", null, "Perfil del inversionista", h("small", null, "NOTA ESTRUCTURADA")), h("p", { class: "lead" }, "Define quién invierte, cuánto, a qué plazo y con qué perfil. Todo el módulo de la nota se calcula con estas variables y se recuerda en tu navegador.")));
-  const subs = [...NOTA_MX().map((k) => [aid("MX", k), k + " (MX)"]), ...NOTA_US().map((k) => [aid("US", k), k + " (EUA)"])];
+  const subs = SUBS_ALL();
   const f = h("div", { class: "panel" }, h("h2", null, "Variables de entrada"),
     h("div", { class: "controls" },
       field("Inversión (MXN)", numIn(NOTA.inv, (v) => v > 0 && notaSet("inv", v)), "n-inv"),
@@ -2267,7 +2275,7 @@ function pageNotaFut() {
 function pageNotaOpc() {
   const page = h("div", { class: "page" }), C = optCtx(), m = nMontos(), os = optSim(m.opc, C);
   page.append(heroN("Opciones: estrategias con CALL y PUT", "14 estrategias (long y short) con primas calculadas con Black-Scholes. El subyacente es el que elegiste en el perfil de la nota. Elige la estrategia de la nota y revisa pérdida máxima, ganancia máxima, break-even y la gráfica al vencimiento."));
-  const subs = [...NOTA_MX().map((k) => [aid("MX", k), k + " (MX)"]), ...NOTA_US().map((k) => [aid("US", k), k + " (EUA)"])];
+  const subs = SUBS_ALL();
   const ctl = h("div", { class: "panel" }, h("h2", null, "Parámetros"), h("div", { class: "controls" },
     field("Subyacente", selIn(subs, NOTA.sub, (v) => notaSet("sub", v)), "o-sub"), field("Estrategia de la nota", selIn(OPC_NAMES, NOTA.estr, (v) => notaSet("estr", v)), "o-estr"),
     field("% fuera del dinero (strangle, collar, cap, floor)", pctIn(N2.otm, (v) => n2Set("otm", v), { w: 70 }), "o-otm"), field("% de las alas (butterfly)", pctIn(N2.ala, (v) => n2Set("ala", v), { w: 70 }), "o-ala"), field("Stop (orden) −x%", pctIn(N2.stop, (v) => n2Set("stop", v), { w: 70 }), "o-stop")));
@@ -2546,8 +2554,8 @@ const optCards = (opts, val, on) => h("div", { class: "optc" }, opts.map(([v, t,
 function wzBody(i) {
   const set = (k, v) => { NOTA[k] = v; notaSave(); renderView(); }, setq = (k, v) => { N2.q[k] = v; n2Save(); renderView(); }; const b = h("div");
   if (i === 0) { b.append(h("h2", null, "¿Cuánto quieres invertir?"), h("p", { class: "q" }, "Es el capital que se repartirá entre renta fija, capitales, futuros y opciones."), h("div", { class: "row" }, field("Monto en pesos mexicanos", numIn(NOTA.inv, (v) => v > 0 && set("inv", v), { w: 170 }), "w-inv")), chipsOf([[100000, "$100 mil"], [500000, "$500 mil"], [1000000, "$1 millón"], [2000000, "$2 millones"], [5000000, "$5 millones"]], NOTA.inv, (v) => set("inv", +v))); }
-  if (i === 1) { const near = rfSel(); b.append(h("h2", null, "¿A qué plazo?"), h("p", { class: "q" }, "El horizonte define el instrumento de renta fija, la volatilidad del periodo y el vencimiento de futuros y opciones."), h("div", { class: "row" }, field("Horizonte en días", numIn(NOTA.dias, (v) => v >= 1 && set("dias", Math.round(v)), { w: 110 }), "w-dias")),
-    chipsOf([[28, "28 días"], [91, "91 días (trimestre)"], [182, "182 días (semestre)"], [364, "364 días (1 año)"]], NOTA.dias, (v) => set("dias", +v)), h("div", { class: "note", style: "margin-top:14px" }, `Con ${NOTA.dias} días, el instrumento de renta fija más cercano es ${near.nombre} (${pf(near.tasa, 2)} anual).`)); }
+  if (i === 1) { const manual = NOTA.instr !== "AUTOMÁTICO"; const near = (() => { const o = NOTA.instr; NOTA.instr = "AUTOMÁTICO"; const r = rfSel(); NOTA.instr = o; return r; })(); b.append(h("h2", null, "¿A qué plazo?"), h("p", { class: "q" }, "El horizonte define el instrumento de renta fija, la volatilidad del periodo y el vencimiento de futuros y opciones."), h("div", { class: "row" }, field("Horizonte en días", numIn(NOTA.dias, (v) => { if (v >= 1) { NOTA.instr = "AUTOMÁTICO"; set("dias", Math.round(v)); } }, { w: 110 }), "w-dias")),
+    chipsOf([[28, "28 días"], [91, "91 días (trimestre)"], [182, "182 días (semestre)"], [364, "364 días (1 año)"]], NOTA.dias, (v) => { NOTA.instr = "AUTOMÁTICO"; set("dias", +v); }), h("div", { class: "note", style: "margin-top:14px" }, `Con ${NOTA.dias} días, el instrumento de renta fija más cercano es ${near.nombre} (${pf(near.tasa, 2)} anual).` + (manual ? ` Tenías elegido ${NOTA.instr} manualmente; al cambiar el plazo se vuelve a selección automática.` : ""))); }
   if (i === 2) { const q = N2.q, sc = qScore(); b.append(h("h2", null, "Conozcámoste"), h("p", { class: "q" }, "Cinco preguntas para calcular tu perfil de inversionista."),
     h("div", { class: "row" }, field("Edad", numIn(q.edad, (v) => v >= 18 && setq("edad", Math.round(v)), { w: 80 }), "w-edad"), field("Pérdida máxima que toleras (%)", numIn(q.perd, (v) => v >= 0 && setq("perd", v), { w: 80 }), "w-perd")),
     h("div", { class: "field", style: "margin-bottom:12px" }, h("label", null, "Experiencia invirtiendo"), chipsOf([[0, "Ninguna"], [1, "Básica"], [2, "Intermedia"], [3, "Avanzada"]], q.exp, (v) => setq("exp", +v))),
@@ -2560,15 +2568,15 @@ function wzBody(i) {
       optCards([["CONSERVADOR", "Conservador", "Prioriza preservar el capital; mayor peso en renta fija."], ["MODERADO", "Moderado", "Equilibrio entre estabilidad, crecimiento y riesgo."], ["AGRESIVO", "Agresivo", "Acepta más volatilidad por un rendimiento potencialmente mayor."], ["PERSONALIZADO", "Personalizado (según tus respuestas)", `Renta fija ${pf(sc.mix("krf"), 0)} · derivados ${pf(sc.mix("der"), 0)} del capital en riesgo`]], NOTA.perfil, (v) => { if (v === "PERSONALIZADO") aplicar(); else set("perfil", v); }),
       h("div", { class: "row", style: "margin-top:16px" }, field("Objetivo de rendimiento en el horizonte (%)", pctIn(NOTA.obj, (v) => set("obj", v), { w: 90 }), "w-obj"), field("Confianza del VaR", selIn([[0.9, "90%"], [0.95, "95%"], [0.99, "99%"]], NOTA.conf, (v) => set("conf", +v)), "w-conf"))); }
   if (i === 4) { const sug = { OPTIMISTA: "CALL LONG", NEUTRAL: "BUTTERFLY LONG", ADVERSO: "COLLAR" }[NOTA.cond];
-    b.append(h("h2", null, "¿Qué esperas del mercado?"), h("p", { class: "q" }, "Tu expectativa orienta la estrategia de opciones y la posición en futuros."),
-      optCards([["OPTIMISTA", "Optimista", "Espero alzas: conviene posición larga y compra de calls."], ["NEUTRAL", "Neutral", "Espero un mercado lateral: butterfly o straddle."], ["ADVERSO", "Adverso", "Espero bajas: coberturas con puts, collar o futuros cortos."]], NOTA.cond, (v) => set("cond", v)),
+    b.append(h("h2", null, "¿Qué esperas del mercado?"), h("p", { class: "q" }, "Tu expectativa propone la estrategia de opciones y la posición en futuros; puedes cambiarlas abajo."),
+      optCards([["OPTIMISTA", "Optimista", "Espero alzas: conviene posición larga y compra de calls."], ["NEUTRAL", "Neutral", "Espero un mercado lateral: butterfly o straddle."], ["ADVERSO", "Adverso", "Espero bajas: coberturas con puts, collar o futuros cortos."]], NOTA.cond, (v) => { NOTA.estr = { OPTIMISTA: "CALL LONG", NEUTRAL: "BUTTERFLY LONG", ADVERSO: "COLLAR" }[v]; N2.pos = v === "ADVERSO" ? "SHORT" : "LONG"; n2Save(); set("cond", v); }),
       h("div", { class: "row", style: "margin-top:16px" }, field("Estrategia con opciones", selIn(OPC_NAMES, NOTA.estr, (v) => set("estr", v)), "w-estr"), field("Posición en futuros", seg([["LONG", "Larga"], ["SHORT", "Corta"]], N2.pos, (v) => n2Set("pos", v)), "w-pos"),
         h("button", { class: "btn2", onclick: () => { NOTA.estr = sug; N2.pos = NOTA.cond === "ADVERSO" ? "SHORT" : "LONG"; notaSave(); n2Save(); renderView(); } }, "Usar la sugerida: " + sug))); }
   if (i === 5) { const mx = NOTA.sel.some((x) => x.startsWith("MX:")), us = NOTA.sel.some((x) => x.startsWith("US:")), cur = mx && us ? "AMBOS" : mx ? "MX" : "US"; const defMX = ["MX:CEMEXCPO", "MX:BIMBOA", "MX:PE&OLES", "MX:WALMEX", "MX:GFNORTEO"], defUS = ["MSFT", "EBAY", "CSCO", "GT", "KMB", "MNST", "ADBE", "AAPL", "CROX", "AMZN", "COST"].map((x) => "US:" + x);
-    const pick = (v) => { NOTA.sel = v === "MX" ? defMX : v === "US" ? defUS : [...defMX, ...defUS]; NOTA.w = {}; if (!NOTA.sel.includes(NOTA.sub)) NOTA.sub = NOTA.sel[0]; notaSave(); renderView(); };
+    const pick = (v) => { NOTA.sel = v === "MX" ? defMX : v === "US" ? defUS : [...defMX, ...defUS]; NOTA.w = {}; if (!NOTA.sel.includes(NOTA.sub) && !(v !== "US" && NOTA.sub.startsWith("MX:"))) NOTA.sub = NOTA.sel[0]; notaSave(); renderView(); };
     b.append(h("h2", null, "¿En qué mercados?"), h("p", { class: "q" }, "Elige dónde quieres tener las acciones. Después puedes agregar o quitar emisoras y cambiar los pesos en el módulo de capitales."),
       optCards([["MX", "México (BMV/BIVA)", "Benchmark: IPC."], ["US", "Estados Unidos (NASDAQ)", "Benchmark: NASDAQ Composite; se convierte con el FIX."], ["AMBOS", "México y EUA", "Mayor diversificación por mercado y moneda."]], cur, pick),
-      h("div", { class: "row", style: "margin-top:16px" }, field("Subyacente para las opciones", selIn(NOTA.sel.map((id) => [id, aparse(id)[1] + (aparse(id)[0] === "US" ? " (EUA)" : " (MX)")]), NOTA.sub, (v) => set("sub", v)), "w-sub"))); }
+      h("div", { class: "row", style: "margin-top:16px" }, field("Subyacente para las opciones", selIn(SUBS_ALL(), NOTA.sub, (v) => set("sub", v)), "w-sub"))); }
   if (i === 6) { const r = rfSel(); b.append(h("h2", null, "Renta fija: la base de la nota"), h("p", { class: "q" }, "Automático elige el CETES con el plazo más cercano a tu horizonte. También puedes fijar otro instrumento."),
     optCards([["AUTOMÁTICO", "Automático", `Hoy elegiría ${r.nombre} (${pf(r.tasa, 2)} anual).`], ...NOTA.rf.inst.map((x) => [x.n, x.n, RF_RIESGO[x.n][4]])], NOTA.instr, (v) => set("instr", v)), h("div", { class: "note warn", style: "margin-top:14px" }, "Ningún instrumento gubernamental está libre de todo riesgo: hay riesgo de mercado, inflación y reinversión. La nota no promete protección de capital.")); }
   if (i === 7) { const R = calcNota(NOTA.perfil), m = R.m; b.append(h("h2", null, "Tu propuesta"), h("p", { class: "q" }, `Perfil ${NOTA.perfil.toLowerCase()} · ${money(NOTA.inv, 0)} · ${NOTA.dias} días`),
